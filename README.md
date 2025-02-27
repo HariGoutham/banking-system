@@ -24,7 +24,7 @@ Before running the project, ensure you have the following installed on your syst
 
 ### 1. Clone the Repository
 
-If you haven't already, clone the repository to your local machine:
+If you haven't already, clone the repository to your local machine by cmd or gitbash:
 
 ```bash
 git clone https://github.com/HariGoutham/banking-system.git
