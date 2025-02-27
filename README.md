@@ -27,7 +27,7 @@ Before running the project, ensure you have the following installed on your syst
 If you haven't already, clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/banking-system.git
+git clone https://github.com/HariGoutham/banking-system.git
 cd banking-system
 ```
 ### 2. Build the Project
