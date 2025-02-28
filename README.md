@@ -2,9 +2,12 @@
 
 A simple banking system implemented in Java that handles transactions, interest rules, and account statements.
 
+---
+
 ## Prerequisites
 
-Before running the project, ensure you have the following installed on your system:
+### Option 1: Running with Java
+If you want to run the application locally without Docker, you need the following:
 
 1. **Java Development Kit (JDK)**
    - Version: 17 or higher
@@ -20,11 +23,19 @@ Before running the project, ensure you have the following installed on your syst
 
 ---
 
-## Getting Started
+### Option 2: Running with Docker
+If you want to run the application using Docker, you only need:
+
+1. **Docker**
+   - Download: [Docker's official website](https://www.docker.com/)
+
+---
+
+## Option 1: Running with Java
 
 ### 1. Clone the Repository
 
-If you haven't already, clone the repository to your local machine by cmd or gitbash:
+Clone the repository to your local machine using Git:
 
 ```bash
 git clone https://github.com/HariGoutham/banking-system.git
@@ -46,7 +57,25 @@ java -jar target/banking-system-1.0.0.jar
 ```
 The application will start, and you can interact with it via the console.
 
-### 4. Functionality of the Application
+## Option 2: Running with Docker
+
+### 1. Pull the Docker Image
+
+Pull the pre-built Docker image from Docker Hub:
+
+```bash
+docker pull harigoutham/banking-system:1.0.0
+```
+
+### 2. Run the Container
+
+Start the application in a Docker container:
+
+```bash
+docker run -it --name banking-system harigoutham/banking-system:1.0.0
+```
+
+## Functionality of the Application
 
 ### Bank Account
 
