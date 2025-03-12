@@ -59,7 +59,7 @@ public class DisplayUtils {
     System.out.print(BankMessages.PROMPT);
   }
 
-  public static String formatTransaction(Transaction transaction, BigDecimal balance) {
+  public static String formatTransaction(Transaction transaction) {
     String type = transaction.type() == TransactionType.D ? "D " : "W ";
     return String.format(
         "| %s | %s | %-4s | %7.2f | %7.2f |\n",
@@ -67,7 +67,7 @@ public class DisplayUtils {
         transaction.id(),
         type,
         transaction.amount(),
-        balance);
+        transaction.balance());
   }
 
   public static String formatInterestTransaction(

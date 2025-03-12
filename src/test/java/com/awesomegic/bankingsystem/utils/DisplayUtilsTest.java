@@ -57,10 +57,20 @@ public class DisplayUtilsTest {
     List<Transaction> transactions = new ArrayList<>();
     transactions.add(
         new Transaction(
-            "1", LocalDate.of(2023, 6, 1), "AC001", TransactionType.D, BigDecimal.valueOf(150.00)));
+            "1",
+            LocalDate.of(2023, 6, 1),
+            "AC001",
+            TransactionType.D,
+            BigDecimal.valueOf(150.00),
+            BigDecimal.valueOf(250.00)));
     transactions.add(
         new Transaction(
-            "2", LocalDate.of(2023, 6, 2), "AC001", TransactionType.W, BigDecimal.valueOf(50.00)));
+            "2",
+            LocalDate.of(2023, 6, 2),
+            "AC001",
+            TransactionType.W,
+            BigDecimal.valueOf(50.00),
+            BigDecimal.valueOf(200.00)));
 
     DisplayUtils.printAccountTransactions("AC001", transactions);
     String expectedOutput =
@@ -98,9 +108,14 @@ public class DisplayUtilsTest {
   public void testFormatTransaction() {
     Transaction transaction =
         new Transaction(
-            "1", LocalDate.of(2023, 6, 1), "AC001", TransactionType.D, BigDecimal.valueOf(150.00));
+            "1",
+            LocalDate.of(2023, 6, 1),
+            "AC001",
+            TransactionType.D,
+            BigDecimal.valueOf(150.00),
+            BigDecimal.valueOf(1000.00));
     BigDecimal balance = BigDecimal.valueOf(1000.00);
-    String formattedTransaction = DisplayUtils.formatTransaction(transaction, balance);
+    String formattedTransaction = DisplayUtils.formatTransaction(transaction);
     String expectedOutput = "| 20230601 | 1 | D    |  150.00 | 1000.00 |\n";
     assertEquals(expectedOutput, formattedTransaction);
   }

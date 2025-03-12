@@ -1,9 +1,12 @@
 package com.awesomegic.bankingsystem.services;
 
 import com.awesomegic.bankingsystem.enums.TransactionType;
+import com.awesomegic.bankingsystem.model.InterestRule;
+import com.awesomegic.bankingsystem.model.StatementInput;
 import com.awesomegic.bankingsystem.model.Transaction;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,14 +14,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 public class StatementGeneratorServiceTest {
 
-  @InjectMocks private StatementGeneratorService statementGeneratorService;
-  @Mock private TransactionService transactionService;
+  @InjectMocks private StatementGeneratorImpl statementGeneratorService;
   private Scanner scanner;
 
   @BeforeEach
@@ -28,63 +29,85 @@ public class StatementGeneratorServiceTest {
   }
 
   @Test
-  @DisplayName("Valid input to generate account statement")
-  public void testValidInputGenerateStatement() {
-    Mockito.when(scanner.nextLine()).thenReturn("AC001 202306");
-    List<Transaction> transactions = new ArrayList<>();
-    transactions.add(
-        new Transaction(
-            "Test1",
-            LocalDate.of(2023, 6, 1),
-            "20230601-01",
-            TransactionType.D,
-            BigDecimal.valueOf(150.00)));
-    transactions.add(
-        new Transaction(
-            "Test2",
-            LocalDate.of(2023, 6, 26),
-            "20230626-01",
-            TransactionType.W,
-            BigDecimal.valueOf(100.00)));
-    Mockito.when(transactionService.getTransactions("AC001")).thenReturn(transactions);
-    statementGeneratorService.handlePrintStatementInput(scanner);
-  }
+  @DisplayName(
+      "Scenario 1: When Account number, year and month are given, statement should be generated from account transactions and rules")
+  public void testGenerateStatement() {
 
-  @Test
-  @DisplayName("Invalid input with incorrect format")
-  public void testInvalidInputIncorrectFormat() {
-    Mockito.when(scanner.nextLine()).thenReturn("AC001 2023-06");
-    statementGeneratorService.handlePrintStatementInput(scanner);
-  }
+    List<Transaction> transactions =
+        new ArrayList<>(
+            List.of(
+                new Transaction(
+                    "202306-01",
+                    LocalDate.of(2023, 6, 1),
+                    "123456",
+                    TransactionType.fromString("D"),
+                    new BigDecimal("150.00"),
+                    new BigDecimal("250.00")),
+                new Transaction(
+                    "202306-02",
+                    LocalDate.of(2023, 6, 7),
+                    "123456",
+                    TransactionType.fromString("W"),
+                    new BigDecimal("20.00"),
+                    new BigDecimal("230.00")),
+                new Transaction(
+                    "202306-03",
+                    LocalDate.of(2023, 6, 11),
+                    "123456",
+                    TransactionType.fromString("D"),
+                    new BigDecimal("100.00"),
+                    new BigDecimal("330.00")),
+                new Transaction(
+                    "202306-04",
+                    LocalDate.of(2023, 6, 13),
+                    "123456",
+                    TransactionType.fromString("D"),
+                    new BigDecimal("20.00"),
+                    new BigDecimal("310.00")),
+                new Transaction(
+                    "202306-05",
+                    LocalDate.of(2023, 6, 17),
+                    "123456",
+                    TransactionType.fromString("W"),
+                    new BigDecimal("100.00"),
+                    new BigDecimal("210.00")),
+                new Transaction(
+                    "202306-06",
+                    LocalDate.of(2023, 6, 21),
+                    "123456",
+                    TransactionType.fromString("D"),
+                    new BigDecimal("20.00"),
+                    new BigDecimal("230.00")),
+                new Transaction(
+                    "202306-07",
+                    LocalDate.of(2023, 6, 27),
+                    "123456",
+                    TransactionType.fromString("W"),
+                    new BigDecimal("10.00"),
+                    new BigDecimal("220.00")),
+                new Transaction(
+                    "202306-08",
+                    LocalDate.of(2023, 6, 30),
+                    "123456",
+                    TransactionType.fromString("D"),
+                    new BigDecimal("20.00"),
+                    new BigDecimal("240.00"))));
 
-  @Test
-  @DisplayName("Handling of empty input")
-  public void testInvalidInputEmptyInput() {
-    Mockito.when(scanner.nextLine()).thenReturn("");
-    statementGeneratorService.handlePrintStatementInput(scanner);
-  }
+    List<InterestRule> interestRules =
+        new ArrayList<>(
+            List.of(
+                new InterestRule(LocalDate.of(2023, 1, 1), "RULE01", new BigDecimal("1.95")),
+                new InterestRule(LocalDate.of(2023, 5, 20), "RULE02", new BigDecimal("1.90")),
+                new InterestRule(LocalDate.of(2023, 6, 3), "RULE03", new BigDecimal("2.30")),
+                new InterestRule(LocalDate.of(2023, 6, 8), "RULE04", new BigDecimal("1.75")),
+                new InterestRule(LocalDate.of(2023, 6, 14), "RULE05", new BigDecimal("2.30")),
+                new InterestRule(LocalDate.of(2023, 6, 20), "RULE06", new BigDecimal("1.30")),
+                new InterestRule(LocalDate.of(2023, 6, 23), "RULE07", new BigDecimal("2.32")),
+                new InterestRule(LocalDate.of(2023, 6, 28), "RULE08", new BigDecimal("3.10"))));
 
-  @Test
-  @DisplayName("Valid input with no transactions")
-  public void testValidInputNoTransactions() {
-    Mockito.when(scanner.nextLine()).thenReturn("AC002 202306");
-    Mockito.when(transactionService.getTransactions("AC002")).thenReturn(new ArrayList<>());
-    statementGeneratorService.handlePrintStatementInput(scanner);
-  }
+    var statementInput = new StatementInput("123456", YearMonth.of(2023, 06));
 
-  @Test
-  @DisplayName("Valid input with transactions")
-  public void testValidInputWithTransactions() {
-    Mockito.when(scanner.nextLine()).thenReturn("AC001 202305");
-    List<Transaction> transactions = new ArrayList<>();
-    transactions.add(
-        new Transaction(
-            "Test1",
-            LocalDate.of(2023, 5, 15),
-            "20230515-01",
-            TransactionType.D,
-            BigDecimal.valueOf(200.00)));
-    Mockito.when(transactionService.getTransactions("AC001")).thenReturn(transactions);
-    statementGeneratorService.handlePrintStatementInput(scanner);
+    statementGeneratorService.generateAndPrintStatement(
+        statementInput, transactions, interestRules);
   }
 }

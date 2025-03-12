@@ -5,4 +5,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record Transaction(
-    String id, LocalDate date, String account, TransactionType type, BigDecimal amount) {}
+    String id,
+    LocalDate date,
+    String account,
+    TransactionType type,
+    BigDecimal amount,
+    BigDecimal balance) {}
