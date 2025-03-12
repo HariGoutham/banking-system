@@ -2,6 +2,13 @@
 
 A simple banking system implemented in Java that handles transactions, interest rules, and account statements.
 
+## Flow chart
+![image](https://github.com/user-attachments/assets/a7c52c01-6f8c-4cb4-bbba-75ddb6fc3f8c)
+
+## Class Diagram 
+![image](https://github.com/user-attachments/assets/2e6e7bf5-f511-4685-8ee7-e76e039a37bb)
+
+
 ---
 
 ## Prerequisites
